@@ -95,7 +95,8 @@ function crear(respuesta) {
 					   'descripcion varchar(50),'+
 					   'precio float,'+
 					   'nombre varchar(50),'+
-					   'curso  varchar(50)'+
+					   'curso  varchar(50),'+
+					   'jornada  varchar(50)'+
 					')', function (error,resultado){
 		if (error) {
 		  console.log(error);				
@@ -120,7 +121,8 @@ function alta(pedido,respuesta) {
 		  descripcion:formulario['descripcion'],
 		  precio:formulario['precio'],
 		  nombre:formulario['nombre'],
-		  curso:formulario['curso']
+		  curso:formulario['curso'],
+		  jornada:formulario['jornada']
   	  };
 	  conexion.query('insert into articulos set ?',registro, function (error,resultado){
 		  if (error) {
@@ -137,7 +139,7 @@ function alta(pedido,respuesta) {
 
 
 function listado(respuesta) {
-	conexion.query('select codigo,descripcion,precio,nombre,curso from articulos', function(error,filas){
+	conexion.query('select codigo,descripcion,precio,nombre,curso,jornada from articulos', function(error,filas){
 		if (error) {			
 			console.log('error en el listado');
 			return;
@@ -149,7 +151,8 @@ function listado(respuesta) {
 			datos+='Descripcion:'+filas[f].descripcion+'<br>';
 			datos+='Precio:'+filas[f].precio+'<br>';
 			datos+='nombre:'+filas[f].nombre+'<br>';
-			datos+='curso:'+filas[f].curso+'<hr>';
+			datos+='curso:'+filas[f].curso+'<br>';
+			datos+='jornada:'+filas[f].jornada+'<hr>';
 		}
 		respuesta.write('<!doctype html><html><head></head><body>');
 	    respuesta.write(datos);	
