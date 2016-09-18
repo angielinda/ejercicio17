@@ -7,7 +7,7 @@ var mysql=require('mysql');
 
 var conexion=mysql.createConnection({
 	host:'localhost',
-	user:'root',
+	user:'angielinda1986',
 	password:'',
 	database:'base1'
 });
@@ -35,7 +35,7 @@ var servidor=http.createServer(function(pedido,respuesta){
 	encaminar(pedido,respuesta,camino);
 });
 
-servidor.listen(8888);
+servidor.listen(8080);
 
 
 function encaminar (pedido,respuesta,camino) {
@@ -93,7 +93,8 @@ function crear(respuesta) {
 	conexion.query('create table articulos ('+
 	                   'codigo int primary key auto_increment,'+
 					   'descripcion varchar(50),'+
-					   'precio float'+
+					   'precio float,'+
+					   'nombre varchar(50)'+
 					')', function (error,resultado){
 		if (error) {
 		  console.log(error);				
@@ -116,7 +117,8 @@ function alta(pedido,respuesta) {
         var formulario = querystring.parse(info);
 	  var registro={
 		  descripcion:formulario['descripcion'],
-		  precio:formulario['precio']
+		  precio:formulario['precio'],
+		  nombre:formulario['nombre']
   	  };
 	  conexion.query('insert into articulos set ?',registro, function (error,resultado){
 		  if (error) {
@@ -133,7 +135,7 @@ function alta(pedido,respuesta) {
 
 
 function listado(respuesta) {
-	conexion.query('select codigo,descripcion,precio from articulos', function(error,filas){
+	conexion.query('select codigo,descripcion,precio,nombre from articulos', function(error,filas){
 		if (error) {			
 			console.log('error en el listado');
 			return;
@@ -143,7 +145,8 @@ function listado(respuesta) {
 		for(var f=0;f<filas.length;f++){
 			datos+='Codigo:'+filas[f].codigo+'<br>';
 			datos+='Descripcion:'+filas[f].descripcion+'<br>';
-			datos+='Precio:'+filas[f].precio+'<hr>';
+			datos+='Precio:'+filas[f].precio+'<br>';
+			datos+='nombre:'+filas[f].nombre+'<hr>';
 		}
 		respuesta.write('<!doctype html><html><head></head><body>');
 	    respuesta.write(datos);	
